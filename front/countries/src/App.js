@@ -57,6 +57,7 @@ class App extends Component {
 
   }
 
+  //GETS COUNTRIES FROM DB
   getCountries = () => {
     return axios.get("http://localhost:3001/countries")
       .then(country => {
