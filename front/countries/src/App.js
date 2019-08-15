@@ -18,7 +18,7 @@ class App extends Component {
   }
 
   async  componentDidMount() {
-    this.getCountries()
+    await this.getCountries()
 
   }
 
@@ -58,7 +58,7 @@ class App extends Component {
   }
 
   //GETS COUNTRIES FROM DB
-  getCountries = () => {
+  getCountries = async () => {
     return axios.get("http://localhost:3001/countries")
       .then(country => {
         this.setState({
