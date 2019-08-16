@@ -89,12 +89,10 @@ class App extends Component {
 
 
   render() {
-
     return (
-
       < div >
-
         <NavBar />
+        {/* function that renders countries */}
         {this.renderCountries()}
         <Switch>
           <Route path={'/create'} render={(props) => <Form  {...props} country={this.state} handleChange={this.handleChange} handleSubmit={this.handleSubmit} />} />
