@@ -24,7 +24,7 @@ class App extends Component {
 
 
 
-
+  // HANDLES THE INPUTS FOR CREATING NEW COUNTRY
   handleChange = (e) => {
     const { name, value } = e.target
     this.setState({
