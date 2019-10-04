@@ -41,11 +41,14 @@ class App extends Component {
       capital: this.state.capital,
       currency: this.state.currency
     }
+
+    // ----THS IS USED TO UPDATE THE STATE--//
     const list = [...this.state.countries]
     list.push(country)
 
     await axios.post("http://localhost:3001/newCountry", country)
     this.setState({
+      // HERE WE USE LIST//
       countries: list,
       name: "",
       capital: "",
