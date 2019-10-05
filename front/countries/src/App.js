@@ -5,6 +5,9 @@ import Form from "./Components/Form"
 import axios from "axios"
 import NavBar from './Components/navBar';
 import Countries from './Components/countries';
+import Information from './Components/updateCountry';
+import Update from './countryUpdateForm';
+
 
 
 
@@ -14,7 +17,8 @@ class App extends Component {
     capital: "",
     currency: "",
     countries: [],
-    clone: []
+    clone: [],
+    formSubmitted: false
   }
 
   async  componentDidMount() {
@@ -35,7 +39,6 @@ class App extends Component {
   // ------THIS HANDLES SUBMMITTING THE NEW COUNTRY CREATED--///
   handleSubmit = async (e) => {
     e.preventDefault()
-
     const country = {
       name: this.state.name,
       capital: this.state.capital,
@@ -47,6 +50,7 @@ class App extends Component {
     list.push(country)
 
     await axios.post("http://localhost:3001/newCountry", country)
+
     this.setState({
       // HERE WE USE LIST//
       countries: list,
@@ -59,7 +63,7 @@ class App extends Component {
 
   //GETS COUNTRIES FROM DB
   getCountries = async () => {
-    return axios.get("http://localhost:3001/countries")
+    await axios.get("http://localhost:3001/countries")
       .then(country => {
         this.setState({
           countries: country.data
@@ -81,11 +85,32 @@ class App extends Component {
     this.setState({
       countries: clone
     })
-
     axios.delete(`http://localhost:3001/deleteCountry/${id}`)
-
   }
 
+  updateCountry = async (e, id) => {
+    e.preventDefault()
+    const body = {
+      name: this.state.name,
+      capital: this.state.capital,
+      currency: this.state.currency
+    }
+
+    let list = [...this.state.countries]
+    let countryToUpdate = list.findIndex(c => c._id === id)
+    list.splice(countryToUpdate, 1)
+
+    list.push(body)
+    await axios.put(`http://localhost:3001/update/${id}`, body)
+
+
+    this.setState({
+      countries: list,
+      name: "",
+      capital: "",
+      currency: ""
+    })
+  }
 
 
   render() {
@@ -95,7 +120,29 @@ class App extends Component {
         {/* function that renders countries */}
         {this.renderCountries()}
         <Switch>
-          <Route path={'/create'} render={(props) => <Form  {...props} country={this.state} handleChange={this.handleChange} handleSubmit={this.handleSubmit} />} />
+
+          <Route path={'/create'} render={(props) =>
+            <Form
+              {...props} country={this.state}
+              handleChange={this.handleChange}
+              handleSubmit={this.handleSubmit}
+            />} />
+
+          <Route path="/item/:id"
+            render={(props) => <Information {...props} countries={this.state.countries} />
+            } />
+
+          <Route
+            path="/update/:id"
+            render={(props) =>
+              <Update
+                {...props} countries={this.state.countries}
+                handleChange={this.handleChange}
+                handleUpdate={this.updateCountry}
+              />
+            } />
+
+
         </Switch>
       </div >
     );

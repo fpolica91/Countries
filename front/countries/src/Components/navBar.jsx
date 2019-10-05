@@ -7,6 +7,7 @@ class NavBar extends Component {
         return (
             <React.Fragment>
                 <Link to="/create">Create Country</Link>
+
             </React.Fragment>
         );
     }

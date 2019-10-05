@@ -26,6 +26,11 @@ router.delete('/deleteCountry/:id', (req, res, next) => {
         .catch(err => console.log(err))
 })
 
+router.put('/update/:id', (req, res, next) => {
+    Country.findByIdAndUpdate(req.params.id, req.body)
+        .then(country => console.log(`updated ${country.name}`))
+        .catch(err => console.log(err))
+})
 
 
 

@@ -1,4 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+
+import { Link } from "react-router-dom"
 
 class Countries extends Component {
 
@@ -15,6 +17,8 @@ class Countries extends Component {
                             <button className="btn btn-sm btn-danger" onClick={() => this.props.deleteCountry(this.props._id)}>
                                 Delete
                             </button>
+                            <Link to={`/item/${this.props._id}`}>Country Info</Link>
+
                         </div>
 
                     </div>
