@@ -34,7 +34,7 @@ class App extends Component {
     this.setState({
       [name]: value
     })
-  }
+  };
 
   // ------THIS HANDLES SUBMMITTING THE NEW COUNTRY CREATED--///
   handleSubmit = async (e) => {
