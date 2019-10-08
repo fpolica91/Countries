@@ -10,7 +10,6 @@ import Update from './countryUpdateForm';
 
 
 
-
 class App extends Component {
   state = {
     name: "",
@@ -18,16 +17,14 @@ class App extends Component {
     currency: "",
     countries: [],
     clone: [],
-    formSubmitted: false
+    formSubmitted: false,
+    query: ""
   }
 
   async  componentDidMount() {
     await this.getCountries()
 
   }
-
-
-
   // HANDLES THE INPUTS FOR CREATING NEW COUNTRY
   handleChange = (e) => {
     const { name, value } = e.target
@@ -66,7 +63,8 @@ class App extends Component {
     await axios.get("http://localhost:3001/countries")
       .then(country => {
         this.setState({
-          countries: country.data
+          countries: country.data,
+          clone: country.data
         })
       })
   }
@@ -112,11 +110,23 @@ class App extends Component {
     })
   }
 
+  searchCountry = (query) => {
+    const { clone } = this.state
+    const list = clone.filter(country => country.name.toLowerCase().includes(query.toLowerCase()))
+
+    this.setState({
+      query: query,
+      countries: list
+    })
+  }
 
   render() {
     return (
       < div >
-        <NavBar />
+        <NavBar
+          handleSearch={this.searchCountry}
+          query={this.state.query}
+        />
         {/* function that renders countries */}
         {this.renderCountries()}
         <Switch>
