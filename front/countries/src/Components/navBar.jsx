@@ -12,6 +12,7 @@ class NavBar extends Component {
                     handleSearch={this.props.handleSearch}
                     query={this.props.query}
                 />
+                <Link to="/signUp">Create Account</Link>
 
             </React.Fragment >
         );

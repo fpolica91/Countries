@@ -7,6 +7,7 @@ import NavBar from './Components/navBar';
 import Countries from './Components/countries';
 import Information from './Components/updateCountry';
 import Update from './countryUpdateForm';
+import UserLogin from './Components/User';
 
 
 
@@ -18,7 +19,11 @@ class App extends Component {
     countries: [],
     clone: [],
     formSubmitted: false,
-    query: ""
+    query: "",
+    username: "",
+    password: "",
+    newUser: ""
+
   }
 
   async  componentDidMount() {
@@ -51,9 +56,11 @@ class App extends Component {
     this.setState({
       // HERE WE USE LIST//
       countries: list,
+      clone: list,
       name: "",
       capital: "",
-      currency: ""
+      currency: "",
+
     })
 
   }
@@ -120,6 +127,38 @@ class App extends Component {
     })
   }
 
+  handleUserForm = (e) => {
+    const { name, value } = e.target
+    this.setState({
+      [name]: value
+    })
+  }
+
+  handleUserSubmit = (e) => {
+    e.preventDefault()
+    const user = {
+      username: this.state.username,
+      password: this.state.password
+    }
+    axios.post('http://localhost:3001/api/signup', user)
+      .then(response => {
+        const user = response.data
+        console.log(user)
+        this.setState({
+          newUser: user
+        })
+      })
+      .catch(err => console.log(err.message))
+
+    this.setState({
+      username: "",
+      password: "",
+    })
+  }
+
+
+
+
   render() {
     return (
       < div >
@@ -150,8 +189,20 @@ class App extends Component {
                 handleChange={this.handleChange}
                 handleUpdate={this.updateCountry}
               />
-            } />
+            }
+          />
 
+          <Route
+            path="/signUp"
+            render={(props) =>
+              <UserLogin
+                {...props}
+                username={this.state.username}
+                password={this.state.password}
+                onHandleUserForm={this.handleUserForm}
+                onUserSubmit={this.handleUserSubmit}
+              />
+            } />
 
         </Switch>
       </div >
